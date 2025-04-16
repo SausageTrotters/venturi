@@ -45,12 +45,12 @@ while time.time() < tend  :
 	total1 = total1 + res1
 	tcount1 = tcount1 + 1 
 
-	output = "venturi static="
-	output += "%.1f" % last0
-	output += ",dif=%.3f " %last1
-	output += str(int(time.time() * 1000))
-	output += "\n"
-	ptg.append(output) 
+#	output = "venturi static="
+#	output += "%.1f" % last0
+#	output += ",dif=%.3f " %last1
+#	output += str(int(time.time() * 1000))
+#	output += "\n"
+#	ptg.append(output) 
 
 av0 = total0 / tcount0
 av1 = total1 / tcount1
