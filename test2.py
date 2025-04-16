@@ -42,8 +42,8 @@ while time.time() < tend  :
 	tcount1 = tcount1 + 1 
 
 	output = "venturi static="
-	output += "%.1f" % last0
-	output += ",dif=%.3f " %last1
+	output += "%.1f" % res0
+	output += ",dif=%.3f " %res1
 	output += str(int(time.time() * 1000000))
 	output += "\n"
 	ptg.append(output) 
