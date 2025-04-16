@@ -44,7 +44,7 @@ while time.time() < tend  :
 	output = "venturi static="
 	output += "%.1f" % last0
 	output += ",dif=%.3f " %last1
-	output += str(int(time.time() * 1000))
+	output += str(int(time.time() * 1000000))
 	output += "\n"
 	ptg.append(output) 
 
@@ -62,4 +62,4 @@ if res == "" or res=="Y" or res=="y" :
 	client = InfluxDBClient(url=ifurl, token=iftoken, org=iforg, enable_gzip=True)
 	write_api = client.write_api(write_options=SYNCHRONOUS)
 	print("Uploading....")
-	write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
+	write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.US)
