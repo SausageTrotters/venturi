@@ -59,5 +59,11 @@ print("%.1f" %av0," ","%.3f" %av1)
 
 print (tcount0, ", ", tcount1)
 
+res = input("Save data to influx? [Yn]")
+
+
+
+
+
 #write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
 #print(ptg)
