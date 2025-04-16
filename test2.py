@@ -23,12 +23,6 @@ iforg = "CageTechnologies"
 ifbucket = "CAGEID01"
 iftoken = "1nwbGi_IcNmMZwJVytR6AzwnN48PHslUT1orUKFHZA0qd4G-ig27LZ8e7ef-8QcWilLrcu0t8ekwPfNgYoqF-A=="
 
-print("Initialising InfluxDBClient")
-client = InfluxDBClient(url=ifurl, token=iftoken, org=iforg, enable_gzip=True)
-write_api = client.write_api(write_options=SYNCHRONOUS)
-
-
-
 while time.time() < tend  :
 
 	res0 = bus0.read_word_data(address, 0x30)
@@ -62,11 +56,8 @@ print (tcount0, ", ", tcount1)
 res = input("Save data to influx? [Yn]")
 
 if res == "" or res=="Y" or res=="y" :
-	print("Saving")
-
-
-
-
-
-#write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
-#print(ptg)
+	print("Initialising InfluxDBClient")
+	client = InfluxDBClient(url=ifurl, token=iftoken, org=iforg, enable_gzip=True)
+	write_api = client.write_api(write_options=SYNCHRONOUS)
+	print("Uploading")
+	write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
