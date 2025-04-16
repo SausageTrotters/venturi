@@ -61,6 +61,9 @@ print (tcount0, ", ", tcount1)
 
 res = input("Save data to influx? [Yn]")
 
+if res == "" or res=="Y" or res=="y" :
+	print("Saving")
+
 
 
 
