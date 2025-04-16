@@ -61,5 +61,5 @@ if res == "" or res=="Y" or res=="y" :
 	print("Initialising InfluxDBClient")
 	client = InfluxDBClient(url=ifurl, token=iftoken, org=iforg, enable_gzip=True)
 	write_api = client.write_api(write_options=SYNCHRONOUS)
-	print("Uploading")
+	print("Uploading....")
 	write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
