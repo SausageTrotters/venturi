@@ -38,10 +38,6 @@ while time.time() < tend  :
 	res0 = -4000 + (res0 + 26214) / 52428 * 8000.0
 	total0 = total0 + res0
 	tcount0 = tcount0 + 1
-	if res0 != last0 :
-		rdcnt0 = rdcnt0 + 1
-		last0 = res0
-		update = True
 
 	res1 = bus1.read_word_data(address, 0x30)
 	if res1 > 32767 :
@@ -49,25 +45,20 @@ while time.time() < tend  :
 	res1 = -125 + (res1 + 26214) / 52428 * 250.0
 	total1 = total1 + res1
 	tcount1 = tcount1 + 1 
-	if res1 != last1 :
-		rdcnt1 = rdcnt1 + 1
-		last1 = res1
-		update = True
 
-	if update == True :
-		output = "venturi static="
-		output += "%.1f" % last0
-		output += ",dif=%.3f " %last1
-		output += str(int(time.time() * 1000))
-		output += "\n"
-		ptg.append(output) 
+	output = "venturi static="
+	output += "%.1f" % last0
+	output += ",dif=%.3f " %last1
+	output += str(int(time.time() * 1000))
+	output += "\n"
+	ptg.append(output) 
 
 av0 = total0 / tcount0
 av1 = total1 / tcount1
 
 print("%.1f" %av0," ","%.3f" %av1)
 
-print (rdcnt0, ", ", rdcnt1)
+print (tcount0, ", ", tcount1)
 
 #write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
 #print(ptg)
