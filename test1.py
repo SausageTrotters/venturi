@@ -54,6 +54,7 @@ while time.time() < tend  :
 		last1 = res1
 		update = True
 
+	update = True
 	if update == True :
 		output = "venturi static="
 		output += "%.1f" % last0
