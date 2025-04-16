@@ -32,17 +32,17 @@ write_api = client.write_api(write_options=SYNCHRONOUS)
 while time.time() < tend  :
 
 	res0 = bus0.read_word_data(address, 0x30)
-	if res0 > 32767 :
-		res0 = res0 - 65536
-	res0 = -4000 + (res0 + 26214) / 52428 * 8000.0
-	total0 = total0 + res0
+#	if res0 > 32767 :
+#		res0 = res0 - 65536
+#	res0 = -4000 + (res0 + 26214) / 52428 * 8000.0
+#	total0 = total0 + res0
 	tcount0 = tcount0 + 1
 
 	res1 = bus1.read_word_data(address, 0x30)
-	if res1 > 32767 :
-		res1 = res1 - 65536
-	res1 = -125 + (res1 + 26214) / 52428 * 250.0
-	total1 = total1 + res1
+#	if res1 > 32767 :
+#		res1 = res1 - 65536
+#	res1 = -125 + (res1 + 26214) / 52428 * 250.0
+#	total1 = total1 + res1
 	tcount1 = tcount1 + 1 
 
 #	output = "venturi static="
@@ -52,10 +52,10 @@ while time.time() < tend  :
 #	output += "\n"
 #	ptg.append(output) 
 
-av0 = total0 / tcount0
-av1 = total1 / tcount1
+#av0 = total0 / tcount0
+#av1 = total1 / tcount1
 
-print("%.1f" %av0," ","%.3f" %av1)
+#print("%.1f" %av0," ","%.3f" %av1)
 
 print (tcount0, ", ", tcount1)
 
