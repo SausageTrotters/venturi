@@ -31,7 +31,6 @@ write_api = client.write_api(write_options=SYNCHRONOUS)
 
 while time.time() < tend  :
 
-	update = False
 	res0 = bus0.read_word_data(address, 0x30)
 	if res0 > 32767 :
 		res0 = res0 - 65536
