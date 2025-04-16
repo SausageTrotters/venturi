@@ -23,6 +23,8 @@ iforg = "CageTechnologies"
 ifbucket = "CAGEID01"
 iftoken = "1nwbGi_IcNmMZwJVytR6AzwnN48PHslUT1orUKFHZA0qd4G-ig27LZ8e7ef-8QcWilLrcu0t8ekwPfNgYoqF-A=="
 
+print("Acquiring data (10s)")
+
 while time.time() < tend  :
 
 	res0 = bus0.read_word_data(address, 0x30)
