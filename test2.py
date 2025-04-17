@@ -6,22 +6,6 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 bus0=smbus.SMBus(0)
 bus1=smbus.SMBus(1)
 address = 0x6c
-last0 = 0
-last1 = 0
-tend = 10.0 + time.time()
-rdcnt0 = 0
-rdcnt1 = 0
-total0 = 0
-total1 = 0
-tcount0 = 0
-tcount1 = 0
-
-
-ptg=[] # points to go at the end of the sequence!
-ifurl = "https://eu-central-1-1.aws.cloud2.influxdata.com"
-iforg = "CageTechnologies"
-ifbucket = "CAGEID01"
-iftoken = "1nwbGi_IcNmMZwJVytR6AzwnN48PHslUT1orUKFHZA0qd4G-ig27LZ8e7ef-8QcWilLrcu0t8ekwPfNgYoqF-A=="
 
 exit = 0
 
@@ -29,6 +13,23 @@ while exit == False :
 	res = input("Acquire data (10s)? [Yn]")
 	if res != "" and res!="Y" and res!="y" :
 		break
+
+	last0 = 0
+	last1 = 0
+	tend = 10.0 + time.time()
+	rdcnt0 = 0
+	rdcnt1 = 0
+	total0 = 0
+	total1 = 0
+	tcount0 = 0
+	tcount1 = 0
+	
+	
+	ptg=[] # points to go at the end of the sequence!
+	ifurl = "https://eu-central-1-1.aws.cloud2.influxdata.com"
+	iforg = "CageTechnologies"
+	ifbucket = "CAGEID01"
+	iftoken = "1nwbGi_IcNmMZwJVytR6AzwnN48PHslUT1orUKFHZA0qd4G-ig27LZ8e7ef-8QcWilLrcu0t8ekwPfNgYoqF-A=="
 
 	print("Acquiring data (10s)")
 	
