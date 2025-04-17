@@ -68,7 +68,7 @@ if res == "" or res=="Y" or res=="y" :
 			write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
 			done = True
 		except :
-			res = "Upload failed! - retry? [Yn]")
+			res = input("Upload failed! - retry? [Yn]")
 			if res == "" or res=="Y" or res=="y" :
 				print("Retrying upload")
 			else :
