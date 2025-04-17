@@ -60,6 +60,19 @@ res = input("Save data to influx? [Yn]")
 if res == "" or res=="Y" or res=="y" :
 	print("Initialising InfluxDBClient")
 	client = InfluxDBClient(url=ifurl, token=iftoken, org=iforg, enable_gzip=True, timeout=5_000)
-	write_api = client.write_api(write_options=SYNCHRONOUS)
-	print("Uploading....")
-	write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
+	done = False
+	while done == False :
+		try :
+			write_api = client.write_api(write_options=SYNCHRONOUS)
+			print("Uploading....")
+			write_api.write(bucket=ifbucket, org=iforg, record=ptg, write_precision=WritePrecision.MS)
+			done = True
+		except :
+			res = "Upload failed! - retry? [Yn]")
+			if res == "" or res=="Y" or res=="y" :
+				print("Retrying upload")
+			else :
+				done = True
+				print ("Upload cancelled!")
+			
+			
