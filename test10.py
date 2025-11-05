@@ -1,11 +1,40 @@
+from sensirion_i2c_driver import LinuxI2cTransceiver
+
+txrx = LinuxI2cTransceiver('/dev/i2c-1')
+txrx.transceive(37,b'\x36\x03',None,0,0)
+
+import serial
+import time
+
 import smbus
 import time
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
-bus0=smbus.SMBus(3)
+def command(data):
+	serport.write(bytes(data + "\r", 'utf-8'))
+	time.sleep(0.05)
+	rc = serport.in_waiting
+	if rc > 0 :
+		return int(serport.read(rc))
+	else :
+		return None
+
+bus0=smbus.SMBus(0)
 bus1=smbus.SMBus(1)
 address = 0x6c
+
+serport = serial.Serial(port='/dev/ttyUSB0', baudrate=115200)
+print("Waiting for serial!")
+time.sleep(2.0)
+
+print("Homing")
+command("1hg")
+
+while command("1hs") != 5 :
+	pass
+
+print("Homing Complete")
 
 exit = 0
 offset0 = 0.0
@@ -35,27 +64,25 @@ while exit == False :
 	iftoken = "1nwbGi_IcNmMZwJVytR6AzwnN48PHslUT1orUKFHZA0qd4G-ig27LZ8e7ef-8QcWilLrcu0t8ekwPfNgYoqF-A=="
 
 	print("Acquiring data (10s)")
+
+	command("1F,1.9,2,10")
 	
 	while time.time() < tend  :
-	
-		res0 = bus0.read_word_data(address, 0x30)
-		if res0 > 32767 :
-			res0 = res0 - 65536
-		res0 = -4000 + (res0 + 26214) / 52428 * 8000.0
-		total0 = total0 + res0
-		tcount0 = tcount0 + 1
-	
-		res1 = bus1.read_word_data(address, 0x30)
-		if res1 > 32767 :
-			res1 = res1 - 65536
-		res1 = -125 + (res1 + 26214) / 52428 * 250.0
-		total1 = total1 + res1
-		tcount1 = tcount1 + 1
 
-	
-		output = "venturi static="
-		output += "%.1f" % res0
-		output += ",dif=%.3f " %res1
+		res = txrx.transceive(37,None,9,0,0)
+		dif = round(int.from_bytes(res[2][0:2], signed=True) / 60.0, 2)
+		temp = round(int.from_bytes(res[2][3:5], signed=True) / 200.0,2)
+		scale = int.from_bytes(res[2][6:8])
+
+		total0 += dif
+		tcount0 += 1
+		total1 += temp
+		tcount1+= 1
+
+		output = "venturi dif="
+		output += "%.2f" % dif
+		output += ",temp=%.2f" %temp
+		output += ",scale=%.0f " %scale
 		output += str(int(time.time() * 1000))
 		output += "\n"
 		ptg.append(output) 
@@ -63,15 +90,8 @@ while exit == False :
 	av0 = total0 / tcount0
 	av1 = total1 / tcount1
 	
-	if done_first == False :
-		done_first=True
-		offset0 = av0
-		offset1 = av1 
-
 
 	print("Raw: %.1f" %av0," ","%.3f" %av1)
-	print("Zeroed: %.1f" %(av0-offset0)," ","%.3f" %(av1-offset1))
-	
 	print (tcount0, ", ", tcount1)
 	
 	res = input("Save data to influx? [Yn]")
